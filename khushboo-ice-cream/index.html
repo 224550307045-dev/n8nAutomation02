@@ -1,0 +1,538 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>KHUSHBOO ICE CREAM — Fresh Scoops & Thick Shakes in Nana Chiloda</title>
+  <meta name="description" content="KHUSHBOO ICE CREAM — Bright, playful flavors: scoops, thick shakes, sundaes & family tubs. Open daily 11 AM–11 PM. Order now for fresh smiles!" />
+  <meta property="og:title" content="KHUSHBOO ICE CREAM — Fresh Scoops & Thick Shakes" />
+  <meta property="og:description" content="Bright & playful flavors in Ahmedabad. Scoops, thick shakes, sundaes & family tubs. Order for pickup or delivery." />
+  <meta property="og:image" content="https://via.placeholder.com/1200x630.png?text=KHUSHBOO+ICE+CREAM" />
+  <meta property="og:type" content="website" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide icons -->
+  <script src="https://unpkg.com/lucide@latest/dist/lucide.min.js"></script>
+
+  <style>
+    /*
+      Custom properties for light and dark themes, pastel brand vibe.
+      Uses data-theme attribute on html for switching.
+    */
+    :root{
+      --font-sans: "Poppins", "Nunito", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      --radius: 14px;
+      --accent-choc: #5C3A21;
+      --peach: #FFD6CC;
+      --mint: #C6F7E2;
+      --cream: #FFF7E9;
+      --glass: rgba(255,255,255,0.6);
+      --text: #2b2b2b;
+      --muted: #5b5b5b;
+      --card-shadow: 0 8px 30px rgba(92,58,33,0.08);
+      --focus-ring: 3px rgba(92,58,33,0.15);
+      --gradient-1: linear-gradient(135deg, #FFD6CC 0%, #FFF7E9 40%, #C6F7E2 100%);
+      --bg: linear-gradient(180deg, #FFF7E9 0%, #FFF 50%);
+      --glass-bg: rgba(255,255,255,0.6);
+    }
+    html[data-theme="dark"]{
+      --text: #f6f6f6;
+      --muted: #d9d9d9;
+      --card-shadow: 0 10px 30px rgba(0,0,0,0.6);
+      --glass-bg: rgba(18,18,20,0.35);
+      --bg: linear-gradient(180deg,#0b0b0d 0%, #111 40%);
+      --gradient-1: linear-gradient(135deg, #2a2a2b 0%, #1f1f1f 100%);
+      --focus-ring: 3px rgba(255,255,255,0.06);
+    }
+
+    body {
+      font-family: var(--font-sans);
+      color: var(--text);
+      background: var(--bg);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      transition: background-color 350ms ease, color 350ms ease;
+      line-height:1.45;
+    }
+
+    /* Skip link */
+    .skip-link {
+      position: absolute;
+      left: -999px;
+      top: auto;
+      background: var(--accent-choc);
+      color: white;
+      padding: 8px 12px;
+      border-radius: 8px;
+      z-index: 60;
+    }
+    .skip-link:focus {
+      left: 16px;
+      top: 16px;
+    }
+
+    /* Hero animated gradient */
+    .animated-hero {
+      background: conic-gradient(from 120deg at 50% 50%, rgba(255,214,204,0.15), rgba(198,247,226,0.12), rgba(255,247,233,0.12));
+      background-size: 300% 300%;
+      animation: gradientShift 8s ease infinite;
+    }
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%;}
+      50% { background-position: 100% 50%;}
+      100% { background-position: 0% 50%;}
+    }
+
+    /* Glass card */
+    .glass {
+      background: var(--glass-bg);
+      -webkit-backdrop-filter: blur(8px);
+      backdrop-filter: blur(8px);
+      border-radius: var(--radius);
+      box-shadow: var(--card-shadow);
+      border: 1px solid rgba(255,255,255,0.06);
+      transition: transform 250ms ease, box-shadow 250ms ease;
+    }
+    html[data-theme="dark"] .glass { border: 1px solid rgba(255,255,255,0.04); }
+
+    .glass:hover { transform: translateY(-6px); box-shadow: 0 18px 40px rgba(0,0,0,0.45); }
+
+    /* Reveal animations for IntersectionObserver */
+    .reveal { opacity: 0; transform: translateY(18px); transition: opacity 650ms ease, transform 650ms cubic-bezier(.2,.9,.2,1); will-change: opacity, transform; }
+    .reveal.in-view { opacity: 1; transform: translateY(0); }
+
+    /* Icon animations */
+    .lucide {
+      opacity: 0;
+      transform: translateY(6px);
+      transition: opacity 600ms ease, transform 600ms cubic-bezier(.2,.9,.2,1);
+      will-change: opacity, transform;
+    }
+    .lucide.in-view { opacity: 1; transform: translateY(0); }
+    .icon-pulse:hover { animation: pulse 900ms infinite; }
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.06); }
+      100% { transform: scale(1); }
+    }
+
+    /* Hover micro interactions for menu cards */
+    .menu-card { transition: transform 220ms ease, box-shadow 220ms ease; }
+    .menu-card:focus-within, .menu-card:focus { outline: none; box-shadow: 0 6px 20px rgba(92,58,33,0.08); transform: translateY(-6px); }
+    .menu-card a { display: block; border-radius: 12px; padding: 14px; text-decoration: none; color: inherit; }
+    .price-badge { background: linear-gradient(90deg, rgba(92,58,33,0.12), rgba(92,58,33,0.06)); padding: 6px 10px; border-radius: 999px; font-weight:700; color:var(--accent-choc); }
+
+    /* Focus style */
+    :focus { outline: 3px solid transparent; box-shadow: 0 0 0 var(--focus-ring); border-radius: 8px; }
+
+    /* Accessibility high contrast adjustments */
+    @media (prefers-contrast: more) {
+      :root { --card-shadow: 0 12px 40px rgba(0,0,0,0.35); }
+    }
+
+    /* Responsive adjustments for hero image */
+    .hero-img { border-radius: 12px; box-shadow: 0 12px 30px rgba(0,0,0,0.08); }
+
+    /* Small utility tweaks for tailwind compatibility fallback */
+    .order-btn { transition: transform 160ms ease, box-shadow 160ms ease; }
+    .order-btn:active { transform: translateY(2px); }
+  </style>
+</head>
+<body class="antialiased text-base">
+  <a href="#main" class="skip-link">Skip to content</a>
+
+  <header class="fixed inset-x-0 top-4 z-40 flex items-center justify-between px-4 sm:px-8" role="banner">
+    <nav class="w-full max-w-6xl mx-auto flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="glass px-3 py-2 flex items-center gap-3" aria-hidden="true" style="border-radius:12px;">
+          <svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false" role="img"><path d="M12 2C12 2 15 4 16 6C17 8 17 11 15 13C13 15 10 15 10 15C8 15 6 13 5 12C3 10 4 7 5 6C6 5 9 3 12 2Z" fill="#FFD6CC"/><path d="M12 22C12 22 9 20 8 18C7 16 7 13 9 11C11 9 14 9 14 9C16 9 18 11 19 12C21 14 20 17 19 18C18 19 15 21 12 22Z" fill="#C6F7E2"/></svg>
+          <div>
+            <p class="text-sm font-bold tracking-wide" style="letter-spacing:0.2px;">KHUSHBOO ICE CREAM</p>
+            <p class="text-xs text-gray-500 dark:text-gray-400" aria-hidden="true">Bright & Playful • Nana Chiloda</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <a href="tel:+919876543210" class="hidden sm:inline-flex items-center gap-2 glass px-3 py-2 focus:ring-2 focus:ring-offset-2 focus:ring-offset-transparent" aria-label="Call KHUSHBOO ICE CREAM">
+          <i data-lucide="phone" class="lucide w-4 h-4 text-[var(--accent-choc)]" aria-hidden="true"></i>
+          <span class="text-sm font-semibold">+91 98765 43210</span>
+        </a>
+
+        <button id="themeToggle" class="glass p-2 rounded-md focus-visible:outline-none" aria-pressed="false" aria-label="Toggle dark mode" title="Toggle theme">
+          <i data-lucide="sun" id="themeIconLight" class="lucide w-5 h-5 text-[var(--accent-choc)]" aria-hidden="true"></i>
+          <i data-lucide="moon" id="themeIconDark" class="lucide w-5 h-5 text-[var(--accent-choc)] hidden" aria-hidden="true"></i>
+        </button>
+
+        <a href="#order" class="order-btn bg-[linear-gradient(90deg,#F9AFA0,#FFD6CC)] text-[var(--accent-choc)] font-semibold px-4 py-2 rounded-lg shadow-md glass hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[var(--accent-choc)]" aria-label="Order now">
+          <i data-lucide="shopping-cart" class="lucide w-4 h-4 inline-block mr-2" aria-hidden="true"></i> Order
+        </a>
+      </div>
+    </nav>
+  </header>
+
+  <main id="main" class="pt-28 pb-20">
+    <section class="max-w-6xl mx-auto px-4 sm:px-8">
+      <!-- HERO -->
+      <div class="animated-hero rounded-2xl glass p-6 sm:p-10 flex flex-col md:flex-row items-center gap-8 overflow-hidden reveal" role="region" aria-labelledby="hero-heading">
+        <div class="flex-1">
+          <h1 id="hero-heading" class="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight" style="font-family:Poppins, Nunito;">
+            Fresh scoops, joyful bites — KHUSHBOO ICE CREAM
+          </h1>
+          <p class="mt-4 text-sm sm:text-base text-[var(--muted)] max-w-xl">
+            Bright, playful flavors crafted daily. From creamy scoops to indulgent thick shakes and family tubs — every spoonful is made to delight. Open Mon–Sun 11:00 AM – 11:00 PM.
+          </p>
+
+          <div class="mt-6 flex flex-col sm:flex-row items-start sm:items-center gap-3">
+            <a href="#menu" class="inline-flex items-center gap-3 px-5 py-3 rounded-lg bg-[linear-gradient(90deg,#C6F7E2,#FFF7E9)] font-semibold text-[var(--accent-choc)] glass hover:scale-[1.02] focus-visible:outline-none" aria-label="Explore menu">
+              <i data-lucide="ice-cream" class="lucide w-5 h-5" aria-hidden="true"></i> Explore Menu
+            </a>
+            <a id="order" href="tel:+919876543210" class="inline-flex items-center gap-3 px-5 py-3 rounded-lg bg-[var(--accent-choc)] text-white font-semibold shadow-md focus-visible:outline-none" aria-label="Call to order">
+              <i data-lucide="phone" class="lucide w-4 h-4" aria-hidden="true"></i> Call to Order
+            </a>
+          </div>
+
+          <ul class="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm" aria-hidden="true">
+            <li class="flex items-center gap-2"><i data-lucide="clock" class="lucide w-4 h-4 text-[var(--accent-choc)]" aria-hidden="true"></i><span class="text-[var(--muted)]">Open: Mon–Sun • 11:00 AM – 11:00 PM</span></li>
+            <li class="flex items-center gap-2"><i data-lucide="map-pin" class="lucide w-4 h-4 text-[var(--accent-choc)]" aria-hidden="true"></i><address class="not-italic text-[var(--muted)]">Shop No.12, Sreevas 3 BHK + Shop, Nr Bansri Circle, Nana Chiloda, Ahmedabad</address></li>
+          </ul>
+        </div>
+
+        <div class="w-full md:w-1/2 flex justify-center">
+          <img src="https://images.unsplash.com/photo-1601004890684-d8cbf643f5f2?q=80&w=900&auto=format&fit=crop&ixlib=rb-4.0.3&s=000" alt="Delicious ice cream scoops in pastel bowls" class="hero-img w-full max-w-md reveal" loading="lazy" />
+        </div>
+      </div>
+
+      <!-- MENU GRID -->
+      <section id="menu" class="mt-12 reveal" aria-labelledby="menu-heading">
+        <div class="flex items-center justify-between">
+          <h2 id="menu-heading" class="text-2xl font-extrabold">Favorites & Thick Shakes</h2>
+          <p class="text-sm text-[var(--muted)]">Made fresh. Scoop-sized delight or share a family tub.</p>
+        </div>
+
+        <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+          <!-- Menu items start -->
+          
+          <article class="menu-card glass p-3 reveal" aria-labelledby="item-Double-Caramel">
+            <a href="tel:+919876543210" aria-label="Order Double Caramel for ₹160">
+              <div class="flex items-center justify-between">
+                <div>
+                  <h3 id="item-Double-Caramel" class="font-semibold">Double Caramel</h3>
+                  <p class="text-xs text-[var(--muted)]">Rich caramel swirls & crunchy notes</p>
+                </div>
+                <div class="price-badge">₹160</div>
+              </div>
+            </a>
+          </article>
+
+          <article class="menu-card glass p-3 reveal" aria-labelledby="item-Dry-Fruit-Carnival">
+            <a href="tel:+919876543210" aria-label="Order Dry Fruit Carnival (Thick Shake) for ₹180">
+              <div class="flex items-center justify-between">
+                <div>
+                  <h3 id="item-Dry-Fruit-Carnival" class="font-semibold">Dry Fruit Carnival (Thick Shake)</h3>
+                  <p class="text-xs text-[var(--muted)]">Creamy shake loaded with chopped dry fruits</p>
+                </div>
+                <div class="price-badge">₹180</div>
+              </div>
+            </a>
+          </article>
+
+          <article class="menu-card glass p-3 reveal" aria-labelledby="item-Kaju-Draksh">
+            <a href="tel:+919876543210" aria-label="Order Kaju Draksh for ₹160">
+              <div class="flex items-center justify-between">
+                <div>
+                  <h3 id="item-Kaju-Draksh" class="font-semibold">Kaju Draksh</h3>
+                  <p class="text-xs text-[var(--muted)]">Buttery cashew & sweet raisin bites</p>
+                </div>
+                <div class="price-badge">₹160</div>
+              </div>
+            </a>
+          </article>
+
+          <article class="menu-card glass p-3 reveal" aria-labelledby="item-Vanilla-Thick-Shake">
+            <a href="tel:+919876543210" aria-label="Order Vanilla Thick Shake for ₹120">
+              <div class="flex items-center justify-between">
+                <div>
+                  <h3 id="item-Vanilla-Thick-Shake" class="font-semibold">Vanilla Thick Shake</h3>
+                  <p class="text-xs text-[var(--muted)]">Classic, creamy, perfectly sweet</p>
+                </div>
+                <div class="price-badge">₹120</div>
+              </div>
+            </a>
+          </article>
+
+          <article class="menu-card glass p-3 reveal" aria-labelledby="item-Vanilla-Brownie-Thick-Shake">
+            <a href="tel:+919876543210" aria-label="Order Vanilla Brownie Thick Shake for ₹150">
+              <div class="flex items-center justify-between">
+                <div>
+                  <h3 id="item-Vanilla-Brownie-Thick-Shake" class="font-semibold">Vanilla Brownie Thick Shake</h3>
+                  <p class="text-xs text-[var(--muted)]">Brownie pieces blended into creamy vanilla</p>
+                </div>
+                <div class="price-badge">₹150</div>
+              </div>
+            </a>
+          </article>
+
+          <article class="menu-card glass p-3 reveal" aria-labelledby="item-Mango-Thick-Shake">
+            <a href="tel:+919876543210" aria-label="Order Mango Thick Shake for ₹140">
+              <div class="flex items-center justify-between">
+                <div>
+                  <h3 id="item-Mango-Thick-Shake" class="font-semibold">Mango Thick Shake</h3>
+                  <p class="text-xs text-[var(--muted)]">Seasonal mangoes blended thick & fruity</p>
+                </div>
+                <div class="price-badge">₹140</div>
+              </div>
+            </a>
+          </article>
+
+          <article class="menu-card glass p-3 reveal" aria-labelledby="item-Strawberry-Thick-Shake">
+            <a href="tel:+919876543210" aria-label="Order Strawberry Thick Shake for ₹140">
+              <div class="flex items-center justify-between">
+                <div>
+                  <h3 id="item-Strawberry-Thick-Shake" class="font-semibold">Strawberry Thick Shake</h3>
+                  <p class="text-xs text-[var(--muted)]">Fresh strawberries & velvety cream</p>
+                </div>
+                <div class="price-badge">₹140</div>
+              </div>
+            </a>
+          </article>
+
+          <article class="menu-card glass p-3 reveal" aria-labelledby="item-Chocolate-Brownie-Thick-Shake">
+            <a href="tel:+919876543210" aria-label="Order Chocolate Brownie Thick Shake for ₹150">
+              <div class="flex items-center justify-between">
+                <div>
+                  <h3 id="item-Chocolate-Brownie-Thick-Shake" class="font-semibold">Chocolate Brownie Thick Shake</h3>
+                  <p class="text-xs text-[var(--muted)]">Deep chocolate shake with brownie crumble</p>
+                </div>
+                <div class="price-badge">₹150</div>
+              </div>
+            </a>
+          </article>
+
+          <article class="menu-card glass p-3 reveal" aria-labelledby="item-Vanilla-scoop">
+            <a href="tel:+919876543210" aria-label="Order Vanilla scoop for ₹40">
+              <div class="flex items-center justify-between">
+                <div>
+                  <h3 id="item-Vanilla-scoop" class="font-semibold">Vanilla (scoop)</h3>
+                  <p class="text-xs text-[var(--muted)]">Classic scoop</p>
+                </div>
+                <div class="price-badge">₹40</div>
+              </div>
+            </a>
+          </article>
+
+          <article class="menu-card glass p-3 reveal" aria-labelledby="item-Chocolate-scoop">
+            <a href="tel:+919876543210" aria-label="Order Chocolate scoop for ₹45">
+              <div class="flex items-center justify-between">
+                <div>
+                  <h3 id="item-Chocolate-scoop" class="font-semibold">Chocolate (scoop)</h3>
+                  <p class="text-xs text-[var(--muted)]">Rich cocoa scoop</p>
+                </div>
+                <div class="price-badge">₹45</div>
+              </div>
+            </a>
+          </article>
+
+          <article class="menu-card glass p-3 reveal" aria-labelledby="item-Strawberry-scoop">
+            <a href="tel:+919876543210" aria-label="Order Strawberry scoop for ₹45">
+              <div class="flex items-center justify-between">
+                <div>
+                  <h3 id="item-Strawberry-scoop" class="font-semibold">Strawberry (scoop)</h3>
+                  <p class="text-xs text-[var(--muted)]">Fresh-sour strawberry</p>
+                </div>
+                <div class="price-badge">₹45</div>
+              </div>
+            </a>
+          </article>
+
+          <article class="menu-card glass p-3 reveal" aria-labelledby="item-Kaju-Draksh-scoop">
+            <a href="tel:+919876543210" aria-label="Order Kaju Draksh scoop/premium for ₹80">
+              <div class="flex items-center justify-between">
+                <div>
+                  <h3 id="item-Kaju-Draksh-scoop" class="font-semibold">Kaju Draksh (scoop / premium)</h3>
+                  <p class="text-xs text-[var(--muted)]">Premium scoop with nuts & raisins</p>
+                </div>
+                <div class="price-badge">₹80</div>
+              </div>
+            </a>
+          </article>
+
+          <article class="menu-card glass p-3 reveal" aria-labelledby="item-Waffle-with-Ice-Cream">
+            <a href="tel:+919876543210" aria-label="Order Waffle with Ice Cream (single) for ₹180">
+              <div class="flex items-center justify-between">
+                <div>
+                  <h3 id="item-Waffle-with-Ice-Cream" class="font-semibold">Waffle with Ice Cream (single)</h3>
+                  <p class="text-xs text-[var(--muted)]">Crisp waffle, warm & topped with a scoop</p>
+                </div>
+                <div class="price-badge">₹180</div>
+              </div>
+            </a>
+          </article>
+
+          <article class="menu-card glass p-3 reveal" aria-labelledby="item-Sundae-Classic">
+            <a href="tel:+919876543210" aria-label="Order Sundae (Classic) for ₹150">
+              <div class="flex items-center justify-between">
+                <div>
+                  <h3 id="item-Sundae-Classic" class="font-semibold">Sundae (Classic)</h3>
+                  <p class="text-xs text-[var(--muted)]">Layers of sauce, nuts & whipped cream</p>
+                </div>
+                <div class="price-badge">₹150</div>
+              </div>
+            </a>
+          </article>
+
+          <article class="menu-card glass p-3 reveal" aria-labelledby="item-Family-Tub">
+            <a href="tel:+919876543210" aria-label="Order Family Tub (1 Litre) for ₹420">
+              <div class="flex items-center justify-between">
+                <div>
+                  <h3 id="item-Family-Tub" class="font-semibold">Family Tub (1 Litre)</h3>
+                  <p class="text-xs text-[var(--muted)]">Perfect for sharing at home</p>
+                </div>
+                <div class="price-badge">₹420</div>
+              </div>
+            </a>
+          </article>
+
+          <!-- Menu items end -->
+        </div>
+      </section>
+
+      <!-- Contact -->
+      <section class="mt-12 reveal" aria-labelledby="contact-heading">
+        <div class="glass p-6 md:p-8 rounded-xl">
+          <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+            <div>
+              <h3 id="contact-heading" class="text-xl font-extrabold">Visit or Order</h3>
+              <p class="mt-2 text-[var(--muted)] max-w-prose">
+                Shop No.12, Sreevas 3 BHK + Shop, Nr Bansri Circle, New Shahibaug, Nana Chiloda, Ahmedabad, Gujarat 382330
+              </p>
+
+              <ul class="mt-4 space-y-2 text-sm">
+                <li class="flex items-center gap-2"><i data-lucide="map-pin" class="lucide w-4 h-4 text-[var(--accent-choc)]" aria-hidden="true"></i>
+                  <a href="https://www.google.com/maps/search/?api=1&query=Shop%20No.12%2C%20Sreevas%203%20BHK%20%2B%20Shop%2C%20Nr%20Bansri%20Circle%2C%20Nana%20Chiloda%2C%20Ahmedabad%2C%20Gujarat%20382330" target="_blank" rel="noopener" class="underline">Open in Maps</a>
+                </li>
+                <li class="flex items-center gap-2"><i data-lucide="clock" class="lucide w-4 h-4 text-[var(--accent-choc)]" aria-hidden="true"></i> <span>Hours: Mon–Sun 11:00 AM – 11:00 PM</span></li>
+                <li class="flex items-center gap-2"><i data-lucide="phone" class="lucide w-4 h-4 text-[var(--accent-choc)]" aria-hidden="true"></i> <a href="tel:+919876543210" class="underline">+91-9876543210</a></li>
+              </ul>
+            </div>
+
+            <div class="flex-shrink-0 flex gap-3">
+              <a href="tel:+919876543210" class="order-btn bg-[var(--accent-choc)] text-white px-6 py-3 rounded-lg font-semibold focus-visible:outline-none" aria-label="Call to order now">
+                <i data-lucide="phone" class="lucide w-4 h-4 inline-block mr-2" aria-hidden="true"></i> Call Now
+              </a>
+              <a href="https://www.google.com/maps/dir/?api=1&destination=Shop+No.12+Sreevas+3+BHK+%2B+Shop+Nr+Bansri+Circle+Nana+Chiloda+Ahmedabad+Gujarat+382330" target="_blank" rel="noopener" class="px-6 py-3 rounded-lg bg-[linear-gradient(90deg,#FFF7E9,#C6F7E2)] text-[var(--accent-choc)] font-semibold glass focus-visible:outline-none" aria-label="Get directions">
+                Directions
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Footer -->
+      <footer class="mt-10 text-sm text-[var(--muted)]" role="contentinfo">
+        <div class="flex items-center justify-between">
+          <p>© <span id="year"></span> KHUSHBOO ICE CREAM — Made with care in Ahmedabad</p>
+          <p class="flex items-center gap-2"><i data-lucide="heart" class="lucide w-4 h-4 text-[var(--accent-choc)]" aria-hidden="true"></i><span>Bright & Playful</span></p>
+        </div>
+      </footer>
+    </div>
+  </main>
+
+  <script>
+    // Initialize lucide icons
+    document.addEventListener("DOMContentLoaded", function(){
+      try { lucide.createIcons(); } catch(e){ /* fallback */ }
+
+      // Mark icons in view after slight delay to animate
+      document.querySelectorAll('.lucide').forEach(function(ic){
+        setTimeout(()=> ic.classList.add('in-view'), 120);
+      });
+
+      // Year
+      document.getElementById('year').textContent = new Date().getFullYear();
+
+      // Theme handling
+      const root = document.documentElement;
+      const toggle = document.getElementById('themeToggle');
+      const iconLight = document.getElementById('themeIconLight');
+      const iconDark = document.getElementById('themeIconDark');
+
+      function applyTheme(theme){
+        if(theme === 'dark'){
+          root.setAttribute('data-theme','dark');
+          toggle.setAttribute('aria-pressed','true');
+          iconLight.classList.add('hidden');
+          iconDark.classList.remove('hidden');
+        } else {
+          root.setAttribute('data-theme','light');
+          toggle.setAttribute('aria-pressed','false');
+          iconLight.classList.remove('hidden');
+          iconDark.classList.add('hidden');
+        }
+        try { lucide.createIcons(); } catch(e){}
+      }
+
+      // Load stored theme or prefer light
+      const stored = localStorage.getItem('khushboo_theme');
+      if(stored) applyTheme(stored);
+      else {
+        // Optionally respect prefers-color-scheme
+        const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        applyTheme(prefersDark ? 'dark' : 'light');
+      }
+
+      toggle.addEventListener('click', function(){
+        const current = root.getAttribute('data-theme');
+        const next = current === 'dark' ? 'light' : 'dark';
+        applyTheme(next);
+        localStorage.setItem('khushboo_theme', next);
+      });
+
+      // Keyboard accessible: toggle via Enter/Space
+      toggle.addEventListener('keydown', function(e){
+        if(e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault(); toggle.click();
+        }
+      });
+
+      // Intersection Observer for reveal elements
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if(entry.isIntersecting){
+            entry.target.classList.add('in-view');
+            // Also animate any icons inside
+            entry.target.querySelectorAll('.lucide').forEach(ic => ic.classList.add('in-view'));
+            io.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.12 });
+
+      document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+      // Enhance menu cards keyboard interaction: Enter/Space triggers link inside
+      document.querySelectorAll('.menu-card').forEach(card => {
+        card.setAttribute('tabindex','0');
+        card.addEventListener('keydown', function(e){
+          if(e.key === 'Enter' || e.key === ' ') {
+            const link = card.querySelector('a');
+            if(link) {
+              link.click();
+            }
+          }
+        });
+      });
+
+      // Ensure focus-visible style for keyboard users
+      function handleFirstTab(e) {
+        if (e.key === 'Tab') {
+          document.body.classList.add('user-is-tabbing');
+          window.removeEventListener('keydown', handleFirstTab);
+        }
+      }
+      window.addEventListener('keydown', handleFirstTab);
+
+    });
+  </script>
+</body>
+</html>
